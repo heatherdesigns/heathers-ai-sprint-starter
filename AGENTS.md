@@ -23,6 +23,7 @@ QuizMaker is a quiz-creating application designed for teachers. The application 
 
 - **Tailwind CSS 4** - Utility-first CSS framework for styling
 - **Geist Fonts** - Modern typography (Geist Sans & Geist Mono)
+- **shadcn/ui** (in `quizmaker-app`) — **react-hook-form** + **@hookform/resolvers** (Zod) for auth forms
 
 ### Development Tools
 
@@ -43,6 +44,7 @@ QuizMaker is a quiz-creating application designed for teachers. The application 
 
 - **Tool**: Wrangler migrations commands
 - **Scope**: Both local and remote D1 database management
+- **Phased schema (product decision):** In **`quizmaker-app`**, ship **authentication first**: Wrangler migrations for **`users`** and **`sessions`** only (`quizmaker-app/docs/BASIC_AUTHENTICATION.md`). Add **`mcqs`** and **`mcq_choices`** in a **separate** migration when starting the MCQ build (`quizmaker-app/docs/MCQ_CRUD.md`). Do not bundle MCQ tables with the initial auth migration unless you explicitly change that plan.
 - **Commands**:
   - Create migrations: `wrangler d1 migrations create`
   - List migrations: `wrangler d1 migrations list`
@@ -97,6 +99,8 @@ quizmaker-app/
 - `npm run deploy` - Build and deploy to Cloudflare Workers
 - `npm run preview` - Build and preview locally
 - `npm run cf-typegen` - Generate Cloudflare TypeScript definitions
+- `npm test` - Run Vitest (from `quizmaker-app/`)
+- `npm run test:watch` - Vitest watch mode (from `quizmaker-app/`)
 
 ## Key Features
 
