@@ -4,24 +4,16 @@ alwaysApply: true
 
 # Cloudflare Worker and Deployment Rules
 
-## `wrangler.jsonrc` Configuration
+## `quizmaker-app/wrangler.jsonc` Configuration
 
-- **Bindings:** The `wrangler.jsonrc` file must include the `d1_databases` and `service_bindings` for external services.
-- **Compatibility Flags:** Ensure `compatibility_flags` are set appropriately for the target Cloudflare environment, including `nodejs_compat` for Next.js.
-
-## Deployment
-
-- Use `npm run deploy` to build and deploy the project to Cloudflare.
-- When working with local development, ensure the `.dev.vars` file is correctly configured for local D1 access.
-
-# Cloudflare Worker and Deployment Rules
-
-## `wrangler.jsonrc` Configuration
-
-- **Bindings:** The `wrangler.jsonrc` file must include the `d1_databases` and `service_bindings` for external services.
-- **Compatibility Flags:** Ensure `compatibility_flags` are set appropriately for the target Cloudflare environment, including `nodejs_compat` for Next.js.
+- **Bindings:** **`quizmaker-app/wrangler.jsonc`** must include **`d1_databases`** and **`service_bindings`** for external services as required by the app.
+- **Compatibility Flags:** Ensure **`compatibility_flags`** are set appropriately for the target Cloudflare environment, including **`nodejs_compat`** for Next.js.
 
 ## Deployment
 
-- Use `npm run deploy` to build and deploy the project to Cloudflare.
-- When working with local development, ensure the `.dev.vars` file is correctly configured for local D1 access.
+- Run **`npm run deploy`** from the **`quizmaker-app/`** directory. It runs **`d1:migrate:remote`** (applies pending remote D1 migrations), then OpenNext build and deploy. Use **`npm run d1:migrate:remote`** alone to migrate remote D1 without deploying.
+- For local development, configure **`quizmaker-app/.dev.vars`** for local D1 and secrets.
+
+## Local builds (agents / CI)
+
+- **`npm run build`** may invoke Wrangler tooling that writes under the user’s **`.wrangler`** directory (e.g. logs, registry). In sandboxed or minimal-permission environments, the build can fail with **`EPERM`**; allow full filesystem access for that step when needed.

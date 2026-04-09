@@ -21,6 +21,7 @@ alwaysApply: true
 - Use `vi.mock` for mocking modules.
 - Use `render` from `@testing-library/react` for testing React components.
 - Use `fireEvent` or `userEvent` for simulating user interactions.
+- **URL / query helpers** (pagination, sort, search params → hrefs): add focused unit tests colocated with the helper (e.g. `mcq-list-url.test.ts` next to `mcq-list-url.ts`) when the logic encodes list or navigation state.
 
 ## Mocking Patterns
 
@@ -44,6 +45,18 @@ vi.mock("@/lib/d1-client", () => ({
 }));
 ```
 
+### Session / auth for Server Actions
+
+When testing Server Actions that call **`getCurrentUser()`** (or equivalent session resolution), mock the session module so tests do not require real cookies, middleware, or D1:
+
+```typescript
+vi.mock("@/lib/auth-session", () => ({
+  getCurrentUser: vi.fn(),
+}));
+```
+
+Adjust the import path to match the module your actions use. Combine with **`d1-client`** and service mocks as needed.
+
 ## Service Testing Rules
 
 ### Test Structure
@@ -59,7 +72,7 @@ vi.mock("@/lib/d1-client", () => ({
 - Mock the database interface completely
 - Test parameter binding and normalization
 - Test error handling and fallback mechanisms
-- Verify data transformation logic (e.g., boolean conversion)
+- Verify data transformation logic (e.g. boolean conversion)
 - Test user ownership validation
 - Test cascade operations and data integrity
 

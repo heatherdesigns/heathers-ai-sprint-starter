@@ -31,6 +31,8 @@ QuizMaker is a quiz-creating application designed for teachers. The application 
 - **Wrangler** - Cloudflare CLI tool for deployment and database management
 - **ESLint** - Code linting and formatting
 
+**Accessibility:** [`quizmaker-app/docs/accessibility.md`](quizmaker-app/docs/accessibility.md) — WCAG-oriented checklist, ESLint `jsx-a11y`, Vitest + axe.
+
 ## Architecture
 
 ### Deployment Configuration
@@ -96,7 +98,8 @@ quizmaker-app/
 - `npm run build` - Build the application
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint
-- `npm run deploy` - Build and deploy to Cloudflare Workers
+- `npm run deploy` - Apply pending remote D1 migrations, then build and deploy to Cloudflare Workers (from `quizmaker-app/`)
+- `npm run d1:migrate:remote` - Apply pending D1 migrations to remote DB only (`quizmaker-app/`)
 - `npm run preview` - Build and preview locally
 - `npm run cf-typegen` - Generate Cloudflare TypeScript definitions
 - `npm test` - Run Vitest (from `quizmaker-app/`)
@@ -114,7 +117,7 @@ quizmaker-app/
 
 1. **Local Development**: Use `npm run dev` for local development
 2. **Database Changes**: Create and apply migrations using Wrangler commands
-3. **Deployment**: Use `npm run deploy` to deploy to Cloudflare Workers
+3. **Deployment**: From `quizmaker-app/`, use `npm run deploy` (includes remote D1 migrations, then OpenNext deploy)
 4. **Environment Updates**: Modify `.dev.vars` for local changes, use Wrangler secrets for production
 
 ## Next Steps

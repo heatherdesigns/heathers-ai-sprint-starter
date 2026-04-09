@@ -6,9 +6,13 @@ alwaysApply: true
 
 ## Installation/Updates
 
-- use npm to install/update
-- to install we need to ensure that core libraries are installed:
-  npm install ai @ai-sdk/react @ai-sdk/openai zod
+- Use **npm** to install/update packages.
+- In this monorepo, run installs from the **`quizmaker-app/`** directory so dependencies are added to the correct **`package.json`** and lockfile (e.g. `cd quizmaker-app && npm install …`).
+- To install AI SDK core libraries, ensure these (or your chosen variants) are present:
+
+```bash
+cd quizmaker-app && npm install ai @ai-sdk/react @ai-sdk/openai zod
+```
 
 ## Usage
 
@@ -137,6 +141,6 @@ setRecipe(null);
 };
 
 // ... rest of your component JSX to show the form and 'recipe'
-}`
+}
 
 ```

@@ -10,6 +10,7 @@ alwaysApply: true
 - **Component Imports:** Import UI components from the `@/components/ui` alias. For example, `import { Button } from "@/components/ui/button";`.
 - **Customization:** Customize components using props and Tailwind CSS classes. Avoid direct modification of the base shadcn files.
 - **Form Patterns:** Use the `shadcn/ui` `Form` component integration with `react-hook-form` and `zod` for all new forms.
+- **`FormLabel` and `FormField`:** **`FormLabel`** must be used **inside** **`FormField`** (with the same `control`/`name` context) so `useFormField` is valid. For section headings or labels not tied to a single registered field, use a plain element (e.g. **`<p className="...">`**) instead of a standalone **`FormLabel`**.
 - **UI Consistency:** Ensure all new components and pages use the installed `shadcn/ui` components for a consistent look and feel across the application.
 - **Data Display:** When displaying tabular data, use the `shadcn/ui` `Table` component. For status indicators, use the `Badge` component.
 

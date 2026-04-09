@@ -6,9 +6,10 @@ alwaysApply: true
 
 ## D1 Best Practices
 
-- **Access:** The D1 database binding `DB` is accessible via the `env` object. For example: `const { results } = await env.DB.prepare(...)`.
+- **Access:** Use **`getDatabase()`** from `lib/d1-client.ts` (e.g. `@/lib/d1-client`). It returns the D1 instance from the Cloudflare request context (`getCloudflareContext().env`), using this app’s binding **`quizmaker_app_database`** (see `quizmaker-app/wrangler.jsonc` and generated `cloudflare-env.d.ts`). Prefer this over ad hoc `env.DB` examples unless your binding is actually named `DB`.
 - **SQL Best Practices:** Use prepared statements to prevent SQL injection vulnerabilities.
 - **Client:** All D1 interactions should go through the `lib/d1-client.ts` module to centralize data access logic.
+- **Types:** After changing Wrangler D1 bindings or related config, regenerate Cloudflare env types from **`quizmaker-app/`**: **`npm run cf-typegen`** (updates **`cloudflare-env.d.ts`**).
 
 ## Database Migrations
 
@@ -17,7 +18,7 @@ alwaysApply: true
   - Create migrations: `wrangler d1 migrations create`
   - List migrations: `wrangler d1 migrations list`
   - Apply migrations: `wrangler d1 migrations apply`
-- **Scope:** Migrations apply to both local and remote D1 databases. However, you MUST NOT apply any migrations to reote databases.
+- **Scope:** Migrations apply to both local and remote D1. **Local:** `wrangler d1 migrations apply … --local` during development. **Remote:** applied by **`npm run deploy`** in `quizmaker-app/` (runs `d1:migrate:remote` before OpenNext deploy) or manually via `npm run d1:migrate:remote`. Do not apply remote migrations from automation/agents unless the user explicitly asks.
 - **Best Practice:** Always create migrations for schema changes rather than manual SQL execution.
 
 ## Parameter Binding Rules (IMPORTANT)

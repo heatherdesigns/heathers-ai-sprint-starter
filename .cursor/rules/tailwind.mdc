@@ -4,10 +4,9 @@ alwaysApply: true
 
 # Tailwind CSS Rules
 
-## Tailwind Configuration
+## Tailwind setup (v4 / QuizMaker)
 
-- The Tailwind configuration is located at `tailwind.config.ts`.
-- All CSS imports should be in the `src/app/globals.css` file.
+- This app uses **Tailwind CSS v4** with **`@tailwindcss/postcss`** (see **`quizmaker-app/postcss.config.mjs`**). Global entry is **`src/app/globals.css`** (e.g. **`@import "tailwindcss"`** and shadcn-related imports). There may be **no** root **`tailwind.config.ts`**—follow existing **`globals.css`** and **`quizmaker-app/components.json`** for paths and theme tokens when adding or extending UI.
 
 ## Styling
 

@@ -10,29 +10,25 @@ alwaysApply: true
 - **Server Components:** Prioritize React Server Components (RSC) for data fetching and rendering. Use `'use client'` only when interactivity is required.
 - **Component Organization:** Organize components logically into the `components/` directory. Group related components within subdirectories.
 - **Services:** Organize any common code between routes into services under the `lib/services` directory
-- **Server Actions:** Use React Server Actions for handling form submissions and mutations, rather than creating separate API routes.
+- **Server Actions:** Use React Server Actions for form submissions and mutations (see **Server Actions & route handlers** below). Prefer them over ad hoc API routes unless you need a public HTTP endpoint.
 - **State Management:** Use the URL for shareable state when appropriate, and manage client state with the Zustand library found in `src/store/`.
 
-## API Conventions
+## Server Actions & route handlers
 
-- All API routes for Server Actions should be defined in `app/api/`.
-- Use absolute imports for better code navigation, e.g., `@/components/Button`.
+- **Server Actions:** Colocate under **`src/app/actions/`** (e.g. `auth.ts`, `mcq.ts`) with **`"use server"`**, matching this project’s layout.
+- **`app/api/`:** Use **route handlers** here only when you intentionally expose HTTP endpoints (webhooks, JSON APIs consumed via `fetch`, etc.).
+- **Imports:** Use absolute imports for navigation, e.g. `@/components/Button`.
 
-# Next.js Application Rules
+## Server Actions & compiled types (IMPORTANT)
 
-## Next.js Best Practices
+- Do not let **type-only** names appear in positions the Next.js compiler emits as **runtime** identifiers (e.g. a return type name like `ListMcqsResult` referenced in a way that becomes an undefined variable in the compiled Server Action).
+- Prefer **`Awaited<ReturnType<typeof listMcqs>>`**, **`typeof getMcq`**, or **`export type { SomeDto } from '@/lib/services/...'`** and use **`import type`** so types are erased at compile time.
 
-- **App Router:** All new routes must be created inside the `app/` directory. Do not use the legacy `pages/` router.
-- **Server Components:** Prioritize React Server Components (RSC) for data fetching and rendering. Use `'use client'` only when interactivity is required.
-- **Component Organization:** Organize components logically into the `components/` directory. Group related components within subdirectories.
-- **Services:** Organize any common code between routes into services under the `lib/services` directory
-- **Server Actions:** Use React Server Actions for handling form submissions and mutations, rather than creating separate API routes.
-- **State Management:** Use the URL for shareable state when appropriate, and manage client state with the Zustand library found in `src/store/`.
+## Client-only modules & hydration
 
-## API Conventions
-
-- All API routes for Server Actions should be defined in `app/api/`.
-- Use absolute imports for better code navigation, e.g., `@/components/Button`.
+- **`next/dynamic`** with **`ssr: false`:** Use only inside **`"use client"`** modules or a small client wrapper. Do not import **`dynamic(..., { ssr: false })`** from a Server Component file.
+- **Dates:** When the same timestamp is rendered on server and client, use a **stable** formatter (e.g. **`Intl.DateTimeFormat`** with an explicit locale and **`timeZone: "UTC"`**) so HTML matches and hydration does not fail.
+- **Forms:** **`FormLabel`** / **`useFormField`** — follow **`shadcn.mdc`**: labels for registered fields belong under **`FormField`**; use plain elements (e.g. **`<p>`**) for section titles outside a single field.
 
 ## shadcn/ui Best Practices
 
